@@ -1,0 +1,21 @@
+{
+    "title": "Wilhelmshaven",
+    "description": "Eine Trainingssoftware für Rettungskräfte zur Verbesserung der Ortskenntnisse in Wilhelmshaven.",
+   "timeLimit": 30,
+    "maxDistance": 500,   
+ "map": {
+        "center": {
+            "latitude": 53.549487,
+            "longitude": 8.100014
+        },
+        "zoom": 12
+    },
+    "maintainer": {
+        "name": "Philipp Gürth",
+        "organization": "privates Projekt als Spielwiese",
+        "email": "ResqGuessr@philipp-guerth.de"
+    },
+    "version": "0.0.2",
+    "license": "MIT License",
+    "github": "https://github.com/goerdy/ResqGuessr"
+}
