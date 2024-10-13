@@ -12,7 +12,7 @@ This tool is designed to help rescue workers, such as ambulance drivers, improve
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/ResqGuessr.git
+   git clone https://github.com/goerdy/ResqGuessr.git
 
 2. **Copy to your Webserver or start local webserver**
 
