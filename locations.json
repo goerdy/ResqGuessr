@@ -3,25 +3,25 @@
         "name": "Klinikum Wilhelmshaven",
         "latitude": 53.545714,
         "longitude": 8.082805,
-        "group": "Kliniken"
+        "group": "Hospitals"
     },
     {
         "name": "Pauline-Ahlsdorff-Haus Wilhelmshaven",
         "latitude": 53.516567,
         "longitude": 8.120608,
-        "group": "Pflegeheime"
+        "group": "Nursing"
     },
     {
         "name": "Feuer- und Rettungswache 1 Wilhelmshaven",
         "latitude": 53.521304,
         "longitude": 8.115276,
-        "group": "Feuerwehr"
+        "group": "Rescue"
     },
     {
         "name": "Feuer- und Rettungswache 2 Wilhelmshaven",
         "latitude": 53.574174,
         "longitude": 8.079758,
-        "group": "Feuerwehr"
+        "group": "Rescue"
     }
 ]
 

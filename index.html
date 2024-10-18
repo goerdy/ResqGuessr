@@ -17,13 +17,22 @@
         <h3 id="location-name">Ort wird geladen...</h3>
         <p>Zeit: <span id="time-left">--</span> Sekunden</p>
         <div id="group-select">
-            <label><input type="checkbox" value="Kliniken" checked> Kliniken</label><br>
-            <label><input type="checkbox" value="Pflegeheime" checked> Pflegeheime</label><br>
-            <label><input type="checkbox" value="Feuerwehr" checked> Feuerwehr</label><br>
+            <label><input type="checkbox" value="Hospitals" checked> Kliniken</label><br>
+            <label><input type="checkbox" value="Nursing" checked> Pflegeheime</label><br>
+            <label><input type="checkbox" value="Rescue" checked> Gefahrenabwehr</label><br>
+            <label><input type="checkbox" value="Special" checked> Besondere Objekte</label><br>
+            <label><input type="checkbox" value="Misc" checked> Sonstiges</label><br>
             <label><input type="checkbox" value="Streets" checked> Straßen</label><br>
         </div>
         <button id="start-button">Starten</button>
         <p id="feedback"></p>
+
+        <!-- Scoreboard -->
+        <div id="scoreboard">
+            <h3>Scoreboard</h3>
+            <p>Gesamt: <span id="total-score">0</span> / <span id="total-available">0</span></p>
+            <div id="category-scores"></div>
+        </div>
     </div>
     <div class="right-panel">
         <div id="map"></div>

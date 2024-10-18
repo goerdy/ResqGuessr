@@ -9,6 +9,19 @@ let polyline;  // Variable zum Speichern der Linie
 let currentGeoJSONStreet = null; // Aktuelle GeoJSON-Straße
 let streetLayer = null;  // Variable zum Speichern der Straßen-Layer
 
+// Scoreboard Daten
+const scores = JSON.parse(localStorage.getItem('scores')) || {
+    total: { current: 0, available: 0 },
+    categories: {
+        "Hospitals": { current: 0, available: 0 },
+        "Nursing": { current: 0, available: 0 },
+        "Rescue": { current: 0, available: 0 },
+        "Special": { current: 0, available: 0 },
+        "Misc": { current: 0, available: 0 },
+        "Streets": { current: 0, available: 0 }
+    }
+};
+
 // Funktion zum Initialisieren der Karte mit den Einstellungen aus settings.json
 function initMap() {
     const mapCenter = [settings.map.center.latitude, settings.map.center.longitude];
@@ -22,6 +35,19 @@ function initMap() {
 
     // Initialisierung der markerGroup, um alle Marker zu verwalten
     markerGroup = L.layerGroup().addTo(map);
+}
+
+// Funktion zum Aktualisieren des Scoreboards
+function updateScoreboard() {
+    document.getElementById('total-score').textContent = scores.total.current;
+    document.getElementById('total-available').textContent = scores.total.available;
+    const categoryScores = document.getElementById('category-scores');
+    categoryScores.innerHTML = '';
+    for (const [category, data] of Object.entries(scores.categories)) {
+        const categoryElement = document.createElement('p');
+        categoryElement.textContent = `${category}: ${data.current} / ${data.available}`;
+        categoryScores.appendChild(categoryElement);
+    }
 }
 
 // Funktion zum Laden von GeoJSON-Dateien für Straßen
@@ -122,8 +148,15 @@ function startGame() {
             // Name der Straße anzeigen (Dateiname ohne Erweiterung)
             const streetName = currentGeoJSONStreet.features[0].properties.name || 'Unbekannte Straße';
             document.getElementById('location-name').innerText = streetName;
+
+            // Scoreboard aktualisieren
+            scores.total.available++;
+            scores.categories["Streets"].available++;
+            updateScoreboard();
+            localStorage.setItem('scores', JSON.stringify(scores));
+
             // Timer starten
-            startTimer(settings.timeLimit, handleTimeout);
+            startTimer(settings.timeLimit, () => handleTimeout());
             // Klick-Event hinzufügen
             map.on('click', onMapClick);
         });
@@ -133,8 +166,15 @@ function startGame() {
         currentGeoJSONStreet = null;
         // Ort anzeigen
         document.getElementById('location-name').innerText = currentLocation.name;
+
+        // Scoreboard aktualisieren
+        scores.total.available++;
+        scores.categories[currentLocation.group].available++;
+        updateScoreboard();
+        localStorage.setItem('scores', JSON.stringify(scores));
+
         // Timer starten
-        startTimer(settings.timeLimit, handleTimeout);
+        startTimer(settings.timeLimit, () => handleTimeout());
         // Klick-Event hinzufügen
         map.on('click', onMapClick);
     }
@@ -153,7 +193,7 @@ function handleTimeout() {
     }
 }
 
-// Verarbeitung des Kartenklicks
+// Funktion zur Verarbeitung des Kartenklicks
 function onMapClick(e) {
     clearInterval(timerInterval);
     timerInterval = null;
@@ -187,6 +227,12 @@ function onMapClick(e) {
     if (distance <= settings.maxDistance) {
         feedbackMessage = `✔️ Richtig! Entfernung: ${Math.round(distance)} Meter`;
         document.getElementById('feedback').className = 'feedback-positive';
+        scores.total.current++;
+        if (currentGeoJSONStreet) {
+            scores.categories["Streets"].current++;
+        } else {
+            scores.categories[currentLocation.group].current++;
+        }
     } else {
         feedbackMessage = `❌ Falsch! Entfernung: ${Math.round(distance)} Meter`;
         document.getElementById('feedback').className = 'feedback-negative';
@@ -225,6 +271,10 @@ function onMapClick(e) {
 
     // Start-Button wieder aktivieren
     document.getElementById('start-button').disabled = false;
+
+    // Scoreboard aktualisieren und speichern
+    updateScoreboard();
+    localStorage.setItem('scores', JSON.stringify(scores));
 
     // Wenn es sich um eine Straße handelt, Straße auf der Karte anzeigen
     if (currentGeoJSONStreet) {
@@ -282,5 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => {
             document.getElementById('start-button').addEventListener('click', startGame);
             setupHelpModal();
+            updateScoreboard(); // Scoreboard initial anzeigen
         });
 });
