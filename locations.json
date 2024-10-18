@@ -1,27 +1,74 @@
 [
     {
         "name": "Klinikum Wilhelmshaven",
-        "latitude": 53.545714,
-        "longitude": 8.082805,
+        "latitude": 53.5454757,
+        "longitude": 8.0828256,
         "group": "Hospitals"
     },
     {
-        "name": "Pauline-Ahlsdorff-Haus Wilhelmshaven",
-        "latitude": 53.516567,
-        "longitude": 8.120608,
+        "name": "ZAP",
+        "latitude": 53.5185005,
+        "longitude": 8.1155505,
         "group": "Nursing"
     },
     {
-        "name": "Feuer- und Rettungswache 1 Wilhelmshaven",
-        "latitude": 53.521304,
-        "longitude": 8.115276,
+        "name": "Wohnpark am Deich",
+        "latitude": 53.577559,
+        "longitude": 8.1046827,
+        "group": "Nursing"
+    },
+    {
+        "name": "Lindenhof Wohnbereich2",
+        "latitude": 53.5265321,
+        "longitude": 8.135228,
+        "group": "Nursing"
+    },
+    {
+        "name": "Freiwillige Feuerwehr Sengwarden",
+        "latitude": 53.5921388,
+        "longitude": 8.0443824,
+        "group": "Rescue"
+    },
+    {
+        "name": "Werkfeuerwehr Nord-West Oelleitung",
+        "latitude": 53.554797,
+        "longitude": 8.1563699,
+        "group": "Rescue"
+    },
+    {
+        "name": "Freiwillige Feuerwehr Rüstringen",
+        "latitude": 53.5631514,
+        "longitude": 8.1025251,
+        "group": "Rescue"
+    },
+    {
+        "name": "Unknown",
+        "latitude": 53.591973,
+        "longitude": 8.0445944,
+        "group": "Rescue"
+    },
+    {
+        "name": "Freiwillige Feuerwehr Bant/Heppens",
+        "latitude": 53.519809,
+        "longitude": 8.0725231,
         "group": "Rescue"
     },
     {
         "name": "Feuer- und Rettungswache 2 Wilhelmshaven",
-        "latitude": 53.574174,
-        "longitude": 8.079758,
+        "latitude": 53.5740857,
+        "longitude": 8.0798539,
+        "group": "Rescue"
+    },
+    {
+        "name": "Feuer- und Rettungswache 1 Wilhelmshaven",
+        "latitude": 53.5213196,
+        "longitude": 8.1152691,
+        "group": "Rescue"
+    },
+    {
+        "name": "Freiwillige Feuerwehr Fedderwarden",
+        "latitude": 53.5599707,
+        "longitude": 8.0476764,
         "group": "Rescue"
     }
 ]
-
