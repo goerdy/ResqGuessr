@@ -6,6 +6,8 @@ let timerInterval = null;
 let timeLeft;
 let markerGroup = null;  // Initialisierung von markerGroup
 let polyline;  // Variable zum Speichern der Linie
+let currentGeoJSONStreet = null; // Aktuelle GeoJSON-Straße
+let streetLayer = null;  // Variable zum Speichern der Straßen-Layer
 
 // Funktion zum Initialisieren der Karte mit den Einstellungen aus settings.json
 function initMap() {
@@ -20,6 +22,32 @@ function initMap() {
 
     // Initialisierung der markerGroup, um alle Marker zu verwalten
     markerGroup = L.layerGroup().addTo(map);
+}
+
+// Funktion zum Laden von GeoJSON-Dateien für Straßen
+function loadStreetGeoJSON(callback) {
+    // Hole die Liste aller GeoJSON-Dateien aus 'streets.json'
+    fetch('streets/streets.json')
+        .then(response => response.json())
+        .then(files => {
+            // Eine zufällige Datei aus der Liste auswählen
+            const randomIndex = Math.floor(Math.random() * files.length);
+            const randomStreetFile = files[randomIndex];
+
+            // GeoJSON-Datei der Straße abrufen und speichern
+            fetch(`streets/${randomStreetFile}`)
+                .then(response => response.json())
+                .then(data => {
+                    currentGeoJSONStreet = data;
+                    if (callback) callback();
+                })
+                .catch(error => {
+                    console.error('Fehler beim Laden der GeoJSON-Datei:', error);
+                });
+        })
+        .catch(error => {
+            console.error('Fehler beim Abrufen der GeoJSON-Dateien:', error);
+        });
 }
 
 // Funktion zum Laden der Projektinformationen
@@ -58,10 +86,14 @@ function startGame() {
     // Start-Button deaktivieren
     document.getElementById('start-button').disabled = true;
 
-    // Vorherige Marker und Linie entfernen
+    // Vorherige Marker, Linie und Straßen-Layer entfernen
     markerGroup.clearLayers();
     if (polyline) {
         map.removeLayer(polyline);
+    }
+    if (streetLayer) {
+        map.removeLayer(streetLayer);
+        streetLayer = null;
     }
 
     // Feedback zurücksetzen
@@ -71,37 +103,54 @@ function startGame() {
     // Karte zurücksetzen
     map.setView([settings.map.center.latitude, settings.map.center.longitude], settings.map.zoom);
 
-    // Gruppe auswählen
-    const selectedGroup = document.getElementById('group-select').value;
-    const filteredLocations = locations.filter(loc => {
-        return selectedGroup === 'Alle' || loc.group === selectedGroup;
-    });
+    // Überprüfen, welche Gruppen ausgewählt sind
+    const selectedGroups = Array.from(document.querySelectorAll('#group-select input[type=checkbox]:checked')).map(checkbox => checkbox.value);
+    const filteredLocations = locations.filter(loc => selectedGroups.includes(loc.group));
+    const includeStreets = selectedGroups.includes('Streets');
 
-    // Überprüfen, ob Orte vorhanden sind
-    if (filteredLocations.length === 0) {
+    // Überprüfen, ob Orte oder Straßen vorhanden sind
+    if (filteredLocations.length === 0 && !includeStreets) {
         document.getElementById('feedback').innerText = 'Keine Orte in dieser Gruppe gefunden.';
         document.getElementById('feedback').className = 'feedback-negative';
         document.getElementById('start-button').disabled = false;
         return;
     }
 
-    // Zufälligen Ort auswählen
-    const randomIndex = Math.floor(Math.random() * filteredLocations.length);
-    currentLocation = filteredLocations[randomIndex];
+    // Zufällig entscheiden, ob ein POI oder eine Straße ausgewählt wird
+    if (includeStreets && (filteredLocations.length === 0 || Math.random() < 0.5)) {
+        loadStreetGeoJSON(() => {
+            // Name der Straße anzeigen (Dateiname ohne Erweiterung)
+            const streetName = currentGeoJSONStreet.features[0].properties.name || 'Unbekannte Straße';
+            document.getElementById('location-name').innerText = streetName;
+            // Timer starten
+            startTimer(settings.timeLimit, handleTimeout);
+            // Klick-Event hinzufügen
+            map.on('click', onMapClick);
+        });
+    } else {
+        const randomIndex = Math.floor(Math.random() * filteredLocations.length);
+        currentLocation = filteredLocations[randomIndex];
+        currentGeoJSONStreet = null;
+        // Ort anzeigen
+        document.getElementById('location-name').innerText = currentLocation.name;
+        // Timer starten
+        startTimer(settings.timeLimit, handleTimeout);
+        // Klick-Event hinzufügen
+        map.on('click', onMapClick);
+    }
+}
 
-    // Ort anzeigen
-    document.getElementById('location-name').innerText = currentLocation.name;
+// Timer-Callback bei Ablauf der Zeit
+function handleTimeout() {
+    document.getElementById('feedback').innerText = '⏰ Zeit abgelaufen!';
+    document.getElementById('feedback').className = 'feedback-negative';
+    map.off('click', onMapClick);
+    document.getElementById('start-button').disabled = false;
 
-    // Timer starten
-    startTimer(settings.timeLimit, () => {
-        document.getElementById('feedback').innerText = '⏰ Zeit abgelaufen!';
-        document.getElementById('feedback').className = 'feedback-negative';
-        map.off('click', onMapClick);
-        document.getElementById('start-button').disabled = false; // Button wieder aktivieren
-    });
-
-    // Klick-Event hinzufügen
-    map.on('click', onMapClick);
+    // Wenn es sich um eine Straße handelt, zeigen wir die Straße an
+    if (currentGeoJSONStreet) {
+        streetLayer = L.geoJSON(currentGeoJSONStreet).addTo(map);
+    }
 }
 
 // Verarbeitung des Kartenklicks
@@ -111,7 +160,25 @@ function onMapClick(e) {
     map.off('click', onMapClick);
 
     const userLatLng = e.latlng;
-    const actualLatLng = L.latLng(currentLocation.latitude, currentLocation.longitude);
+    let actualLatLng;
+
+    if (currentGeoJSONStreet) {
+        // Für Straßen: Berechne den nächstgelegenen Punkt auf allen Features der Straße zur Benutzerauswahl
+        let minDistance = Infinity;
+        currentGeoJSONStreet.features.forEach(feature => {
+            const coordinates = feature.geometry.coordinates;
+            coordinates.forEach(coord => {
+                const latLng = L.latLng(coord[1], coord[0]);
+                const distance = userLatLng.distanceTo(latLng);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    actualLatLng = latLng;
+                }
+            });
+        });
+    } else {
+        actualLatLng = L.latLng(currentLocation.latitude, currentLocation.longitude);
+    }
 
     const distance = userLatLng.distanceTo(actualLatLng); // Berechnung der Entfernung in Metern
 
@@ -158,6 +225,11 @@ function onMapClick(e) {
 
     // Start-Button wieder aktivieren
     document.getElementById('start-button').disabled = false;
+
+    // Wenn es sich um eine Straße handelt, Straße auf der Karte anzeigen
+    if (currentGeoJSONStreet) {
+        streetLayer = L.geoJSON(currentGeoJSONStreet).addTo(map);
+    }
 }
 
 // Einstellungen und Orte laden

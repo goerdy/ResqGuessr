@@ -9,52 +9,51 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <h1>ResqGuessr</h1>
-            <h2 id="project-title">Wilhelmshaven</h2>
-            <button id="help-button">Hilfe</button>
-            <h3 id="location-name">Ort wird geladen...</h3>
-            <p>Zeit: <span id="time-left">--</span> Sekunden</p>
-            <select id="group-select">
-                <option value="Alle">Alle Gruppen</option>
-                <option value="Kliniken">Kliniken</option>
-                <option value="Pflegeheime">Pflegeheime</option>
-                <option value="Feuerwehr">Feuerwehr</option>
-            </select>
-            <button id="start-button">Starten</button>
-            <p id="feedback"></p>
+<div class="container">
+    <div class="left-panel">
+        <h1>ResqGuessr</h1>
+        <h2 id="project-title">Wilhelmshaven</h2>
+        <button id="help-button">Hilfe</button>
+        <h3 id="location-name">Ort wird geladen...</h3>
+        <p>Zeit: <span id="time-left">--</span> Sekunden</p>
+        <div id="group-select">
+            <label><input type="checkbox" value="Kliniken" checked> Kliniken</label><br>
+            <label><input type="checkbox" value="Pflegeheime" checked> Pflegeheime</label><br>
+            <label><input type="checkbox" value="Feuerwehr" checked> Feuerwehr</label><br>
+            <label><input type="checkbox" value="Streets" checked> Straßen</label><br>
         </div>
-        <div class="right-panel">
-            <div id="map"></div>
-        </div>
+        <button id="start-button">Starten</button>
+        <p id="feedback"></p>
     </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>Projekt: <strong>ResqGuessr</strong> | Version: 0.0.2</p>
-        <p>Entwickler: Philipp Gürth | <a href="https://github.com/goerdy/ResqGuessr" target="_blank">GitHub Repository</a></p>
-        <p>Lizenz: Open Source (MIT License)</p>
-    </footer>
-
-    <!-- Help Modal -->
-    <div id="help-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Projektinformationen</h2>
-            <p id="modal-description">Projektbeschreibung wird geladen...</p>
-            <h3>Kontakt zum Maintainer:</h3>
-            <p id="modal-maintainer"></p>
-            <p id="modal-email"></p>
-            <h3>Über das Projekt:</h3>
-            <p>ResqGuessr wurde von Philipp Gürth erstellt. Es ist ein Open Source-Projekt unter der MIT-Lizenz.</p>
-            <p>Finden Sie den Quellcode auf <a href="https://github.com/goerdy/ResqGuessr" target="_blank">GitHub</a>.</p>
-        </div>
+    <div class="right-panel">
+        <div id="map"></div>
     </div>
+</div>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="app.js"></script>
+<!-- Footer -->
+<footer>
+    <p>Projekt: <strong>ResqGuessr</strong> | Version: 0.0.2</p>
+    <p>Entwickler: Philipp Gürth | <a href="https://github.com/goerdy/ResqGuessr" target="_blank">GitHub Repository</a></p>
+    <p>Lizenz: Open Source (MIT License)</p>
+</footer>
+
+<!-- Help Modal -->
+<div id="help-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Projektinformationen</h2>
+        <p id="modal-description">Projektbeschreibung wird geladen...</p>
+        <h3>Kontakt zum Maintainer:</h3>
+        <p id="modal-maintainer"></p>
+        <p id="modal-email"></p>
+        <h3>Über das Projekt:</h3>
+        <p>ResqGuessr wurde von Philipp Gürth erstellt. Es ist ein Open Source-Projekt unter der MIT-Lizenz.</p>
+        <p>Finden Sie den Quellcode auf <a href="https://github.com/goerdy/ResqGuessr" target="_blank">GitHub</a>.</p>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
-
