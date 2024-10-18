@@ -15,7 +15,7 @@
         "organization": "privates Projekt als Spielwiese",
         "email": "ResqGuessr@philipp-guerth.de"
     },
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT License",
     "github": "https://github.com/goerdy/ResqGuessr"
 }

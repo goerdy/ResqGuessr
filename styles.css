@@ -28,8 +28,14 @@ body {
     height: 100%;
 }
 
-h1 {
-    font-size: 24px;
+/* Logo Style Title */
+.logo-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #007bff;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
 #group-select, #start-button {
@@ -79,6 +85,21 @@ footer p {
     margin: 5px;
 }
 
+#help-button {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#help-button:hover {
+    background-color: #0056b3;
+}
+
 /* Modal Styling */
 .modal {
     display: none; /* Versteckt das Modal standardmäßig */
@@ -116,4 +137,49 @@ footer p {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Scoreboard Styling */
+#scoreboard {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: block; /* Scoreboard wieder anzeigen */
+}
+
+/* Pokal-Symbol entfernen */
+#scoreboard::before {
+    content: none;
+}
+
+.total-score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.category-scores-container {
+
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.category-scores-container p {
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-scores-container p span {
+    font-weight: bold;
+    color: #333;
 }

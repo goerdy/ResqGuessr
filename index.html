@@ -11,9 +11,9 @@
 <body>
 <div class="container">
     <div class="left-panel">
-        <h1>ResqGuessr</h1>
+        <!-- Logo Style Title -->
+        <h1 class="logo-title">ResqGuessr</h1>
         <h2 id="project-title">Wilhelmshaven</h2>
-        <button id="help-button">Hilfe</button>
         <h3 id="location-name">Ort wird geladen...</h3>
         <p>Zeit: <span id="time-left">--</span> Sekunden</p>
         <div id="group-select">
@@ -28,11 +28,13 @@
         <p id="feedback"></p>
 
         <!-- Scoreboard -->
-        <div id="scoreboard">
-            <h3>Scoreboard</h3>
-            <p>Gesamt: <span id="total-score">0</span> / <span id="total-available">0</span></p>
-            <div id="category-scores"></div>
-        </div>
+        <p class="total-score">🏆 Gesamt: <span id="total-score">0</span> / <span id="total-available">0</span> 🏆</p>
+        <details id="scoreboard">
+            <summary>Scoreboard</summary>
+            <div id="category-scores" class="category-scores-container">
+                <!-- Einzelne Kategorien-Scores werden hier angezeigt -->
+            </div>
+        </details>
     </div>
     <div class="right-panel">
         <div id="map"></div>
@@ -44,6 +46,7 @@
     <p>Projekt: <strong>ResqGuessr</strong> | Version: 0.0.2</p>
     <p>Entwickler: Philipp Gürth | <a href="https://github.com/goerdy/ResqGuessr" target="_blank">GitHub Repository</a></p>
     <p>Lizenz: Open Source (MIT License)</p>
+    <button id="help-button">Hilfe</button> <!-- Hilfe-Button verschoben -->
 </footer>
 
 <!-- Help Modal -->
