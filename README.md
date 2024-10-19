@@ -18,9 +18,34 @@ There is a hosted test Version with Data of the German city Wilhelmshaven: [pq5.
    git clone https://github.com/goerdy/ResqGuessr.git
    ```
 
-2. **Copy to your web server or start a local web server**
+2. **Copy to your web server or start a local web server with:**
+   ```bash
+   python -m http.server 8000  
+   ```
+**Configure**
 
-3. **Configure**
+Folder Structure
+   ```bash
+   ResQGuessr
+   |- assets
+      |- Icons
+   |- streets
+      |- streets.json
+      |- YourCity_streets
+        |- street1.geojson
+        |- ...
+   |- tools
+      |- LocationDownloader.py
+      |- StreetDownloader.py
+   |- app.js
+   |- index.html
+   |- LICENSE
+   |- locations.json
+   |- README.md
+   |- settings.json
+   |- styles.css
+   ```
+   
    - `settings.json` (basic information, center of the map, and default zoom level):
    ```json
    {
@@ -46,22 +71,65 @@ There is a hosted test Version with Data of the German city Wilhelmshaven: [pq5.
    }
    ```
 
-    - `locations.json` (enter your POIs with name, longitude, and latitude).
+- `locations.json` (enter your POIs with name, longitude, and latitude).
+
+Json file with all your Locations.
+available groups are: "Hospitals", "Nursing", "Rescue", "Special", "Misc"
    ```json
    [
     {
         "name": "Your POI 1",
         "latitude": 53.545714,
         "longitude": 8.082805,
-        "group": "Kliniken"
+        "group": "Hospitals"
     },
     {
         "name": "Your POI 2",
         "latitude": 53.516567,
         "longitude": 8.120608,
-        "group": "Pflegeheime"
+        "group": "Nursing"
     },
    ]
    ```
      
-   - `streets.json` (feature coming soon).
+   - `streets.json` (contains a List of all dedicated street files).
+
+The Streetfiles can be made manually, but its highly recommend to use the tool/StreetDownloader.py
+```json
+   [
+   "yourcity_streets/mainstreet.geojson",
+   "yourcity_streets/upperstreet.geojson",
+   "yourcity_streets/parkway.geojson"
+   ]
+   ```
+
+## Tools
+
+***StreetDownloader***
+
+Downloads all Streets of a given City or Area to separate geojson files and creates a street.json file as lookup.
+
+Start with
+````bash
+python StreetDownloader.py
+````
+You will be asked after the City Name and then it might take some time depending on the number of streets and OVERPASS-API restrictions.
+
+***LocationDownloader***
+
+Downloads a set of locations (Hospitals, Fire Strations, Nursing Homes) of a given City or Area to locations.json file.
+
+Start with
+````bash
+python locationDownloader.py
+````
+You will be asked after the City Name and then it might take some time depending on the Citys size and OVERPASS-API restrictions.
+ATTENTION: The results are quite depending on the OpenStrettMap Data quality in that area. You will need to check that Data carefully.
+
+## To-Do / known issues
+
+- localisation with external locales file for multilanguage support
+- Improve of distance calculation between UserPoint and Streets
+- Handling of non latin Streetnames (Filenames)
+
+****Please report Bugs!****
